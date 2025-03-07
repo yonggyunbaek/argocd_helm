@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "argocdtest.fullname" . }}
+  labels:
+    {{- include "argocdtest.labels" . | nindent 4 }}
+spec:
+  selector:
+    app: {{ .Chart.Name }}
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.targetPort }}
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "argocdtest.selectorLabels" . | nindent 4 }}
