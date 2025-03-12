@@ -44,6 +44,18 @@ spec:
           volumeMounts:
             {{- toYaml . | nindent 12 }}
           {{- end }}
+        - name: busybox
+          image: busybox:uclibc
+          command: ["/bin/sh", "-c", "while true; do sleep 3600; done"]
+          securityContext:
+            privileged: true  # tcpdump 실행을 위해 필요
+          resources:
+            requests:
+              cpu: "10m"
+              memory: "16Mi"
+            limits:
+              cpu: "50m"
+              memory: "64Mi"
       {{- with .Values.volumes }}
       volumes:
         {{- toYaml . | nindent 8 }}
